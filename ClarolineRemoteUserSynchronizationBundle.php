@@ -15,4 +15,8 @@ use Claroline\CoreBundle\Library\PluginBundle;
 
 class ClarolineRemoteUserSynchronizationBundle extends PluginBundle
 {
+    public function hasMigrations()
+    {
+        return false;
+    }
 }
