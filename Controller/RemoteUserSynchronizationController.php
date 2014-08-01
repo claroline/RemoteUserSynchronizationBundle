@@ -111,27 +111,33 @@ class RemoteUserSynchronizationController extends Controller
                     !empty($email) &&
                     !empty($password)) {
 
-                    if (!is_null($userId)) {
-                        $user = $this->userManager->getEnabledUserById($userId);
+                    try {
 
-                        if (is_null($user)) {
+                        if (!is_null($userId)) {
+                            $user = $this->userManager->getEnabledUserById($userId);
 
-                            return new Response('Not found', 404);
+                            if (is_null($user)) {
+
+                                return new Response('Not found', 404);
+                            }
+                            $user->setUsername($username);
+                            $user->setFirstName($firstName);
+                            $user->setLastName($lastName);
+                            $user->setMail($email);
+                            $user->setPlainPassword($password);
+                            $this->userManager->persistUser($user);
+                        } else {
+                            $user = new User();
+                            $user->setUsername($username);
+                            $user->setFirstName($firstName);
+                            $user->setLastName($lastName);
+                            $user->setMail($email);
+                            $user->setPlainPassword($password);
+                            $this->userManager->createUser($user);
                         }
-                        $user->setUsername($username);
-                        $user->setFirstName($firstName);
-                        $user->setLastName($lastName);
-                        $user->setMail($email);
-                        $user->setPlainPassword($password);
-                        $this->userManager->persistUser($user);
-                    } else {
-                        $user = new User();
-                        $user->setUsername($username);
-                        $user->setFirstName($firstName);
-                        $user->setLastName($lastName);
-                        $user->setMail($email);
-                        $user->setPlainPassword($password);
-                        $this->userManager->createUser($user);
+                    } catch (\Exception $e) {
+
+                        return new Response('User edition error', 400);
                     }
 
                     $userRoles = $this->roleManager
@@ -153,12 +159,7 @@ class RemoteUserSynchronizationController extends Controller
                     $this->updateUserRoles($user, $userRoles, $refreshedRoles);
                     $this->authenticator->authenticate($username, $password);
 
-                    $response = array(
-                        'userId' => $user->getId(),
-                        'sessionId' => $this->session->getId()
-                    );
-
-                    return new JsonResponse($response, 200);
+                    return new JsonResponse($user->getId(), 200);
                 } else {
 
                     return new Response('Bad Request', 400);
