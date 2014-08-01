@@ -25,7 +25,7 @@ The user datas that can be modified (or simply created) by this method are :
 | Requirements |
 ----------------
 
-* "claroline/core-bundle": ">=3.1.5"
+* "claroline/core-bundle": ">=3.2"
 
 * A security token must be created and configured in "Administration > Parameters > Security tokens management".
 
