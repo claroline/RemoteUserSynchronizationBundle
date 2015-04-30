@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as EXT;
 use JMS\DiExtraBundle\Annotation as DI;
 
@@ -31,7 +30,6 @@ class RemoteUserSynchronizationController extends Controller
     private $authenticator;
     private $request;
     private $roleManager;
-    private $securityContext;
     private $session;
     private $tokenManager;
     private $userManager;
@@ -41,7 +39,6 @@ class RemoteUserSynchronizationController extends Controller
      *     "authenticator"      = @DI\Inject("claroline.authenticator"),
      *     "requestStack"       = @DI\Inject("request_stack"),
      *     "roleManager"        = @DI\Inject("claroline.manager.role_manager"),
-     *     "securityContext"    = @DI\Inject("security.context"),
      *     "session"            = @DI\Inject("session"),
      *     "tokenManager"       = @DI\Inject("claroline.manager.security_token_manager"),
      *     "userManager"        = @DI\Inject("claroline.manager.user_manager")
@@ -51,7 +48,6 @@ class RemoteUserSynchronizationController extends Controller
         Authenticator $authenticator,
         RequestStack $requestStack,
         RoleManager $roleManager,
-        SecurityContextInterface $securityContext,
         SessionInterface $session,
         SecurityTokenManager $tokenManager,
         UserManager $userManager
@@ -60,7 +56,6 @@ class RemoteUserSynchronizationController extends Controller
         $this->authenticator = $authenticator;
         $this->request = $requestStack;
         $this->roleManager = $roleManager;
-        $this->securityContext = $securityContext;
         $this->session = $session;
         $this->tokenManager = $tokenManager;
         $this->userManager = $userManager;
