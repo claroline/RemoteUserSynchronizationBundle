@@ -129,6 +129,8 @@ class RemoteUserSynchronizationController extends Controller
                             $user->setMail($email);
                             $user->setPlainPassword($password);
                             $this->userManager->createUser($user);
+                            $user->setIsMailValidated(true);
+                            $this->userManager->persistUser($user);
                         }
                     } catch (\Exception $e) {
 
