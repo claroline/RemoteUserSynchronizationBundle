@@ -109,7 +109,7 @@ class RemoteUserSynchronizationController extends Controller
                     try {
 
                         if (!is_null($userId)) {
-                            $user = $this->userManager->getEnabledUserById($userId);
+                            $user = $this->userManager->getUserById($userId);
 
                             if (is_null($user)) {
 
